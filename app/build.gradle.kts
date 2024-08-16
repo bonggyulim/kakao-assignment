@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
+    alias(libs.plugins.ksp)
+    alias(libs.plugins.hilt)
 }
 
 android {
@@ -33,9 +35,32 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+    buildFeatures{
+        viewBinding = true
+        buildConfig = true
+    }
 }
 
 dependencies {
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter)
+    //hilt
+    implementation(libs.hilt)
+    ksp(libs.hilt.compiler)
+    //coil
+    implementation(libs.coil)
+    //viewPager
+    implementation (libs.androidx.viewpager2)
+    //circleIndicator
+    implementation (libs.circleindicator)
+    //androidx-datastore-preferences
+    implementation (libs.androidx.datastore.preferences)
+    //gson
+    implementation (libs.gson)
+    //okhttp3
+    implementation(libs.okhttp)
+    implementation(libs.logging.interceptor)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
