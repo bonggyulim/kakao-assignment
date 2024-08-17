@@ -2,7 +2,7 @@ package com.example.toyprojectkakaoapi.data.response
 
 import com.example.toyprojectkakaoapi.domain.entity.ImageDocumentsEntity
 import com.example.toyprojectkakaoapi.domain.entity.ImageEntity
-import com.example.toyprojectkakaoapi.domain.entity.VideoDocumentsEntity
+import com.example.toyprojectkakaoapi.domain.entity.VideoDocumentEntity
 import com.example.toyprojectkakaoapi.domain.entity.VideoEntity
 
 fun ImageResponse.toEntity(): ImageEntity {
@@ -23,8 +23,8 @@ fun VideoResponse.toEntity(): VideoEntity {
     )
 }
 
-fun VideoDocuments.toEntity(): VideoDocumentsEntity {
-    return VideoDocumentsEntity(
+fun VideoDocuments.toEntity(): VideoDocumentEntity {
+    return VideoDocumentEntity(
         thumbnail, datetime
     )
 }

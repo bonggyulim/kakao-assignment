@@ -48,6 +48,9 @@ dependencies {
     //hilt
     implementation(libs.hilt)
     ksp(libs.hilt.compiler)
+    //nav
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     //coil
     implementation(libs.coil)
     //viewPager
@@ -61,7 +64,10 @@ dependencies {
     //okhttp3
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
-
+    //lifecycle
+    implementation (libs.androidx.lifecycle.viewmodel.ktx)
+    implementation (libs.androidx.activity.ktx)
+    implementation (libs.androidx.fragment.ktx)
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)

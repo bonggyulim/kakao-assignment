@@ -9,7 +9,6 @@ data class ImageEntity(
 )
 
 data class ImageDocumentsEntity(
-    @SerializedName("thumbnail_url")
     val thumbnail: URL,
     val datetime: Date
 )
