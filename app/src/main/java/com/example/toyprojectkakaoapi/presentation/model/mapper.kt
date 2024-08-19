@@ -1,30 +1,16 @@
 package com.example.toyprojectkakaoapi.presentation.model
 
-import com.example.toyprojectkakaoapi.domain.entity.ImageDocumentsEntity
-import com.example.toyprojectkakaoapi.domain.entity.ImageEntity
-import com.example.toyprojectkakaoapi.domain.entity.VideoDocumentEntity
-import com.example.toyprojectkakaoapi.domain.entity.VideoEntity
+import com.example.toyprojectkakaoapi.domain.entity.SearchEntity
+import com.example.toyprojectkakaoapi.domain.entity.SearchEntityList
 
-fun ImageEntity.toModel() : ImageModel {
-    return ImageModel(
+fun SearchEntityList.toModel() : SearchModelList {
+    return SearchModelList(
         documents?.map { it.toModel() }
     )
 }
 
-fun ImageDocumentsEntity.toModel() : ImageDocumentsModel {
-    return ImageDocumentsModel(
-        thumbnail, datetime
-    )
-}
-
-fun VideoEntity.toModel() : VideoModel {
-    return VideoModel(
-        documents?.map { it.toModel() }
-    )
-}
-
-fun VideoDocumentEntity.toModel() : VideoDocumentsModel {
-    return VideoDocumentsModel(
+fun SearchEntity.toModel() : SearchModel {
+    return SearchModel(
         thumbnail, datetime
     )
 }

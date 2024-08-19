@@ -2,15 +2,15 @@ package com.example.toyprojectkakaoapi.presentation.search
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.activity.viewModels
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.example.toyprojectkakaoapi.R
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.toyprojectkakaoapi.databinding.FragmentSearchBinding
 import com.example.toyprojectkakaoapi.presentation.UiState
 import dagger.hilt.android.AndroidEntryPoint
@@ -32,8 +32,7 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        observeGetImageState()
-        observeGetVideoState()
+        observeVideoStateAndImageState()
         initSearchView()
     }
 
@@ -42,33 +41,21 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
-    private fun observeGetImageState() {
+    private fun observeVideoStateAndImageState() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getImageState.collectLatest { state ->
+            viewModel.getImageAndVideoState.collectLatest { state ->
                 when (state) {
                     is UiState.Loading -> {
                         Log.d("apiLog", "loading")
                     }
                     is UiState.Success -> {
                         Log.d("apiLog", "success")
-                    }
-                    is UiState.Error -> {
-                        Log.d("apiLog", "error")
-                    }
-                }
-            }
-        }
-    }
-
-    private fun observeGetVideoState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getVideoState.collectLatest { state ->
-                when (state) {
-                    is UiState.Loading -> {
-                        Log.d("apiLog", "loading")
-                    }
-                    is UiState.Success -> {
-                        Log.d("apiLog", "success")
+                        val searchAdapter = state.data.documents?.let { doc -> SearchRVAdapter(doc.sortedByDescending { it.datetime }) }
+                        binding.rvSearch.adapter = searchAdapter
+                        binding.rvSearch.layoutManager = GridLayoutManager(
+                            requireContext(),
+                            2
+                        )
                     }
                     is UiState.Error -> {
                         Log.d("apiLog", "error")
@@ -82,15 +69,21 @@ class SearchFragment : Fragment() {
         binding.searchView.isSubmitButtonEnabled = true
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                // @TODO
+                Log.d("query", "${binding.searchView.query}")
+                viewLifecycleOwner.lifecycleScope.launch {
+                    if (query != null) {
+                        viewModel.getVideoAndImageList(query)
+                    }
+                }
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                // @TODO
+                //TODO
                 return true
             }
         })
+
     }
 
 }
