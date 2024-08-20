@@ -11,6 +11,12 @@ fun SearchEntityList.toModel() : SearchModelList {
 
 fun SearchEntity.toModel() : SearchModel {
     return SearchModel(
+        thumbnail, datetime, isLiked
+    )
+}
+
+fun SearchModel.toEntity(): SearchEntity {
+    return SearchEntity(
         thumbnail, datetime
     )
 }

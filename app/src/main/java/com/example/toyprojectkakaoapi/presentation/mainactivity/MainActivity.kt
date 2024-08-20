@@ -1,5 +1,6 @@
 package com.example.toyprojectkakaoapi.presentation.mainactivity
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.enableEdgeToEdge
@@ -15,8 +16,11 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.example.toyprojectkakaoapi.R
 import com.example.toyprojectkakaoapi.databinding.ActivityMainBinding
+import com.example.toyprojectkakaoapi.domain.entity.SearchEntity
 import com.example.toyprojectkakaoapi.presentation.UiState
 import com.example.toyprojectkakaoapi.presentation.search.SearchViewModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -27,7 +31,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-
         setUpNavigation()
     }
 

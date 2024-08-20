@@ -1,4 +1,4 @@
-package com.example.toyprojectkakaoapi.presentation.search
+package com.example.toyprojectkakaoapi.presentation.myItem
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,17 +7,17 @@ import coil.load
 import com.example.toyprojectkakaoapi.R
 import com.example.toyprojectkakaoapi.databinding.RvSearchBinding
 import com.example.toyprojectkakaoapi.presentation.model.SearchModel
+import com.example.toyprojectkakaoapi.presentation.search.SearchRVAdapter
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class SearchRVAdapter(private var items: List<SearchModel>) :
-    RecyclerView.Adapter<SearchRVAdapter.Holder>() {
 
-    interface ItemClick {
-        fun itemClick(position: Int, isLiked: Boolean)
+class MyItemRVAdapter(private var items: MutableList<SearchModel>): RecyclerView.Adapter<MyItemRVAdapter.Holder>() {
+
+    interface ItemClick{
+        fun itemClick(position: Int)
     }
-
     var itemClick: ItemClick? = null
 
     class Holder(binding: RvSearchBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -31,40 +31,25 @@ class SearchRVAdapter(private var items: List<SearchModel>) :
         return Holder(binding)
     }
 
+    override fun onBindViewHolder(holder: Holder, position: Int) {
+        holder.heart.setOnClickListener {
+            itemClick?.itemClick(position)
+            items.removeAt(position)
+            notifyItemRemoved(position)
+            notifyItemRangeChanged(position, items.size)
+        }
+        holder.heart.setImageResource(R.drawable.icon_favorite)
+        holder.image.load(items[position].thumbnail)
+        holder.date.text = format(items[position].datetime)
+    }
+
     override fun getItemCount(): Int {
         return items.size
     }
 
-    override fun onBindViewHolder(holder: Holder, position: Int) {
-        holder.heart.apply {
-            if (items[position].isLiked) {
-                setImageResource(R.drawable.icon_favorite)
-            } else {
-                setImageResource(R.drawable.icon_favorite_border)
-            }
-
-            setOnClickListener {
-                val isLiked = items[position].isLiked
-                itemClick?.itemClick(position, !isLiked)
-                items[position].isLiked = !isLiked
-
-                if (isLiked) {
-                    setImageResource(R.drawable.icon_favorite_border)
-                } else {
-                    setImageResource(R.drawable.icon_favorite)
-                }
-            }
-        }
-
-        holder.image.load(items[position].thumbnail)
-        holder.date.text = format(items[position].datetime)
-
-    }
 
     private fun format(date: Date): String {
         val pattern = SimpleDateFormat("yyyy-MM-dd E HH:mm", Locale.KOREAN)
         return pattern.format(date)
     }
-
-
 }

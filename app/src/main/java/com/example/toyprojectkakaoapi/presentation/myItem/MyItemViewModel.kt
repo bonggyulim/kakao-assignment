@@ -1,8 +1,7 @@
-package com.example.toyprojectkakaoapi.presentation.search
+package com.example.toyprojectkakaoapi.presentation.myItem
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.toyprojectkakaoapi.domain.entity.SearchEntity
 import com.example.toyprojectkakaoapi.domain.usecase.DeleteSearchEntityUseCase
 import com.example.toyprojectkakaoapi.domain.usecase.GetImageAndVideoListUseCase
 import com.example.toyprojectkakaoapi.domain.usecase.LoadSearchEntityUseCase
@@ -12,49 +11,42 @@ import com.example.toyprojectkakaoapi.presentation.model.SearchModel
 import com.example.toyprojectkakaoapi.presentation.model.SearchModelList
 import com.example.toyprojectkakaoapi.presentation.model.toEntity
 import com.example.toyprojectkakaoapi.presentation.model.toModel
+import com.example.toyprojectkakaoapi.presentation.search.SearchViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SearchViewModel  @Inject constructor(
-    private val getImageAndVideoListUseCase: GetImageAndVideoListUseCase,
-    private val saveSearchEntityUseCase: SaveSearchEntityUseCase,
+class MyItemViewModel  @Inject constructor(
+    private val loadSearchEntityUseCase: LoadSearchEntityUseCase,
     private val deleteSearchEntityUseCase: DeleteSearchEntityUseCase
 ) : ViewModel() {
 
-    private val _getImageAndVideoState = MutableStateFlow<UiState<SearchModelList>>(UiState.Loading)
-    val getImageAndVideoState: StateFlow<UiState<SearchModelList>> get() = _getImageAndVideoState
+    private val _loadItemsState = MutableStateFlow<UiState<SearchModelList>>(UiState.Loading)
+    val loadItemsState: StateFlow<UiState<SearchModelList>> get() = _loadItemsState
 
-
-    fun getVideoAndImageList(query: String) {
+    fun loadItems() {
         viewModelScope.launch {
 
-            _getImageAndVideoState.value = UiState.Loading
+            _loadItemsState.value = UiState.Loading
 
-            getImageAndVideoListUseCase.invoke(query)
+            loadSearchEntityUseCase.invoke()
                 .catch { e ->
-                    _getImageAndVideoState.value = UiState.Error(e.toString())
+                    _loadItemsState.value = UiState.Error(e.toString())
                 }
                 .collect { entity ->
-                    _getImageAndVideoState.value = UiState.Success(entity.toModel())
+                    _loadItemsState.value = UiState.Success(entity.toModel())
                 }
         }
     }
 
-    fun saveSearchEntity(searchModel: SearchModel) {
-        viewModelScope.launch {
-            saveSearchEntityUseCase.invoke(searchModel.toEntity())
-        }
-    }
-
-    fun deleteSearchEntity(searchModel: SearchModel) {
+    fun deleteItem(searchModel: SearchModel) {
         viewModelScope.launch {
             deleteSearchEntityUseCase.invoke(searchModel.toEntity())
         }
     }
+
 }

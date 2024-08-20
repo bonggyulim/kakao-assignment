@@ -7,5 +7,6 @@ data class SearchModelList(
 )
 data class SearchModel (
     val thumbnail: String,
-    val datetime: Date
+    val datetime: Date,
+    var isLiked: Boolean
 )
