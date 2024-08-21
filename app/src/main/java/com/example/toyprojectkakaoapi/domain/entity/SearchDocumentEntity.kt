@@ -14,7 +14,7 @@ data class SearchDocumentEntity(
 
 data class SearchMetaEntity(
     val imageCount : Int = 0,
-    val imageEnd : Boolean = false,
+    val imageEnd : Boolean = true,
     val videoCount : Int = 0,
-    val videoEnd : Boolean = false
+    val videoEnd : Boolean = true
 )

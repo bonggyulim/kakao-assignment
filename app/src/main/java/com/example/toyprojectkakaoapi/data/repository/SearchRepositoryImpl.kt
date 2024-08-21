@@ -1,5 +1,6 @@
 package com.example.toyprojectkakaoapi.data.repository
 
+import android.util.Log
 import com.example.toyprojectkakaoapi.data.response.toEntity
 import com.example.toyprojectkakaoapi.domain.entity.ImageEntity
 import com.example.toyprojectkakaoapi.domain.entity.VideoEntity

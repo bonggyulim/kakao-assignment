@@ -59,8 +59,8 @@ class MyItemFragment : Fragment() {
 
                         is UiState.Success -> {
                             Log.d("apiLog", "success")
-                            val data = state.data.documents?.toMutableList()
-                            val myItemAdapter = MyItemRVAdapter(data ?: mutableListOf())
+                            val data = state.data.toMutableList()
+                            val myItemAdapter = MyItemRVAdapter(data)
                             binding.rvSearch.adapter = myItemAdapter
                             binding.rvSearch.layoutManager = GridLayoutManager(
                                 requireContext(),
@@ -69,7 +69,7 @@ class MyItemFragment : Fragment() {
 
                             myItemAdapter.itemClick = object : MyItemRVAdapter.ItemClick {
                                 override fun itemClick(position: Int) {
-                                    viewModel.deleteItem(data!![position])
+                                    viewModel.deleteItem(data[position])
                                 }
                             }
 
