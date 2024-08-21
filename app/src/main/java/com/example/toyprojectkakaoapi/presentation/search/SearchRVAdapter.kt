@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.toyprojectkakaoapi.R
 import com.example.toyprojectkakaoapi.databinding.RvSearchBinding
-import com.example.toyprojectkakaoapi.presentation.model.SearchModel
+import com.example.toyprojectkakaoapi.presentation.model.SearchDocumentModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class SearchRVAdapter(private var items: List<SearchModel>) :
+class SearchRVAdapter(private var items: List<SearchDocumentModel>) :
     RecyclerView.Adapter<SearchRVAdapter.Holder>() {
 
     interface ItemClick {

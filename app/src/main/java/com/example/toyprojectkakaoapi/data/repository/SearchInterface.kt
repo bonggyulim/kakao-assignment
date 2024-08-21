@@ -1,7 +1,7 @@
 package com.example.toyprojectkakaoapi.data.repository
 
-import com.example.toyprojectkakaoapi.data.response.ImageResponseList
-import com.example.toyprojectkakaoapi.data.response.VideoResponseList
+import com.example.toyprojectkakaoapi.data.response.ImageResponse
+import com.example.toyprojectkakaoapi.data.response.VideoResponse
 import com.example.toyprojectkakaoapi.util.AUTH_HEADER
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -12,8 +12,10 @@ interface ImageSearchInterface {
     suspend fun searchImage(
         @Header("Authorization") apiKey: String = "KakaoAK $AUTH_HEADER",
         @Query("query") query: String,
-        @Query("sort") sort: String
-    ): ImageResponseList
+        @Query("sort") sort: String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): ImageResponse
 }
 
 interface VideoSearchInterface {
@@ -21,6 +23,8 @@ interface VideoSearchInterface {
     suspend fun searchVideo(
         @Header("Authorization") apiKey: String = "KakaoAK $AUTH_HEADER",
         @Query("query") query: String,
-        @Query("sort") sort : String
-    ): VideoResponseList
+        @Query("sort") sort : String,
+        @Query("page") page: Int,
+        @Query("size") size: Int
+    ): VideoResponse
 }

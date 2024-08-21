@@ -3,15 +3,11 @@ package com.example.toyprojectkakaoapi.presentation.myItem
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.toyprojectkakaoapi.domain.usecase.DeleteSearchEntityUseCase
-import com.example.toyprojectkakaoapi.domain.usecase.GetImageAndVideoListUseCase
 import com.example.toyprojectkakaoapi.domain.usecase.LoadSearchEntityUseCase
-import com.example.toyprojectkakaoapi.domain.usecase.SaveSearchEntityUseCase
 import com.example.toyprojectkakaoapi.presentation.UiState
-import com.example.toyprojectkakaoapi.presentation.model.SearchModel
-import com.example.toyprojectkakaoapi.presentation.model.SearchModelList
+import com.example.toyprojectkakaoapi.presentation.model.SearchDocumentModel
 import com.example.toyprojectkakaoapi.presentation.model.toEntity
 import com.example.toyprojectkakaoapi.presentation.model.toModel
-import com.example.toyprojectkakaoapi.presentation.search.SearchViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -25,8 +21,8 @@ class MyItemViewModel  @Inject constructor(
     private val deleteSearchEntityUseCase: DeleteSearchEntityUseCase
 ) : ViewModel() {
 
-    private val _loadItemsState = MutableStateFlow<UiState<SearchModelList>>(UiState.Loading)
-    val loadItemsState: StateFlow<UiState<SearchModelList>> get() = _loadItemsState
+    private val _loadItemsState = MutableStateFlow<UiState<List<SearchDocumentModel>>>(UiState.Loading)
+    val loadItemsState: StateFlow<UiState<List<SearchDocumentModel>>> get() = _loadItemsState
 
     fun loadItems() {
         viewModelScope.launch {
@@ -38,14 +34,14 @@ class MyItemViewModel  @Inject constructor(
                     _loadItemsState.value = UiState.Error(e.toString())
                 }
                 .collect { entity ->
-                    _loadItemsState.value = UiState.Success(entity.toModel())
+                    _loadItemsState.value = UiState.Success(entity.map { it.toModel() })
                 }
         }
     }
 
-    fun deleteItem(searchModel: SearchModel) {
+    fun deleteItem(searchDocumentModel: SearchDocumentModel) {
         viewModelScope.launch {
-            deleteSearchEntityUseCase.invoke(searchModel.toEntity())
+            deleteSearchEntityUseCase.invoke(searchDocumentModel.toEntity())
         }
     }
 

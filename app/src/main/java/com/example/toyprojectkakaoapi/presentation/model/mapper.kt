@@ -1,22 +1,30 @@
 package com.example.toyprojectkakaoapi.presentation.model
 
+import com.example.toyprojectkakaoapi.domain.entity.SearchMetaEntity
+import com.example.toyprojectkakaoapi.domain.entity.SearchDocumentEntity
 import com.example.toyprojectkakaoapi.domain.entity.SearchEntity
-import com.example.toyprojectkakaoapi.domain.entity.SearchEntityList
-
-fun SearchEntityList.toModel() : SearchModelList {
-    return SearchModelList(
-        documents?.map { it.toModel() }
-    )
-}
 
 fun SearchEntity.toModel() : SearchModel {
     return SearchModel(
+        documents.map { it.toModel() },
+        meta.toModel()
+    )
+}
+
+fun SearchMetaEntity.toModel(): SearchMetaModel {
+    return SearchMetaModel(
+        imageCount, imageEnd, videoCount, videoEnd
+    )
+}
+
+fun SearchDocumentEntity.toModel() : SearchDocumentModel {
+    return SearchDocumentModel(
         thumbnail, datetime, isLiked
     )
 }
 
-fun SearchModel.toEntity(): SearchEntity {
-    return SearchEntity(
+fun SearchDocumentModel.toEntity(): SearchDocumentEntity {
+    return SearchDocumentEntity(
         thumbnail, datetime
     )
 }

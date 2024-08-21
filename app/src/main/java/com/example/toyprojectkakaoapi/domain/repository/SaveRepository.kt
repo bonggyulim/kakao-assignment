@@ -1,11 +1,10 @@
 package com.example.toyprojectkakaoapi.domain.repository
 
-import com.example.toyprojectkakaoapi.domain.entity.SearchEntity
-import com.example.toyprojectkakaoapi.domain.entity.SearchEntityList
+import com.example.toyprojectkakaoapi.domain.entity.SearchDocumentEntity
 import kotlinx.coroutines.flow.Flow
 
 interface SaveRepository {
-    suspend fun saveSearchEntity(item: SearchEntity)
-    suspend fun loadSearchEntity() : Flow<SearchEntityList>
-    suspend fun deleteSearchEntity(item: SearchEntity)
+    suspend fun saveSearchEntity(item: SearchDocumentEntity)
+    suspend fun loadSearchEntity() : Flow<List<SearchDocumentEntity>>
+    suspend fun deleteSearchEntity(item: SearchDocumentEntity)
 }

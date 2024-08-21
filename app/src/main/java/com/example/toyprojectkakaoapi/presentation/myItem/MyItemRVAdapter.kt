@@ -6,14 +6,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.example.toyprojectkakaoapi.R
 import com.example.toyprojectkakaoapi.databinding.RvSearchBinding
-import com.example.toyprojectkakaoapi.presentation.model.SearchModel
-import com.example.toyprojectkakaoapi.presentation.search.SearchRVAdapter
+import com.example.toyprojectkakaoapi.presentation.model.SearchDocumentModel
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
 
-class MyItemRVAdapter(private var items: MutableList<SearchModel>): RecyclerView.Adapter<MyItemRVAdapter.Holder>() {
+class MyItemRVAdapter(private var items: MutableList<SearchDocumentModel>): RecyclerView.Adapter<MyItemRVAdapter.Holder>() {
 
     interface ItemClick{
         fun itemClick(position: Int)

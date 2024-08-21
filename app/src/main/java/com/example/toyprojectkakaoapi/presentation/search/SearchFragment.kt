@@ -8,13 +8,11 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.toyprojectkakaoapi.databinding.FragmentSearchBinding
 import com.example.toyprojectkakaoapi.presentation.UiState
-import com.example.toyprojectkakaoapi.presentation.model.SearchModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -24,28 +22,23 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModels()
-    private var lastQuery: String? = null
+    private var page = 1
+    private var lastQuery = ""
+    private var imageEnd = false
+    private var videoEnd = false
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
         return binding.root
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initSearchView()
         observeVideoStateAndImageState()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        lifecycleScope.launch {
-            if (lastQuery != null) {
-                viewModel.getVideoAndImageList(lastQuery!!)
-            }
-        }
     }
 
     override fun onDestroyView() {
@@ -62,7 +55,6 @@ class SearchFragment : Fragment() {
                     }
 
                     is UiState.Success -> {
-                        Log.d("apiLog", "success")
                         val data = state.data.documents?.sortedByDescending { it.datetime }
                         val searchAdapter = SearchRVAdapter(data ?: listOf())
                         binding.rvSearch.adapter = searchAdapter
@@ -80,6 +72,10 @@ class SearchFragment : Fragment() {
                                 }
                             }
                         }
+
+                        imageEnd = state.data.meta.imageEnd
+                        videoEnd = state.data.meta.videoEnd
+
                     }
 
                     is UiState.Error -> {
@@ -96,10 +92,10 @@ class SearchFragment : Fragment() {
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 Log.d("query", "${binding.searchView.query}")
-                lastQuery = query
                 viewLifecycleOwner.lifecycleScope.launch {
                     if (query != null) {
-                        viewModel.getVideoAndImageList(query)
+                        lastQuery = query
+                        viewModel.getVideoAndImageList(query, page)
                     }
                 }
                 return false
@@ -112,5 +108,26 @@ class SearchFragment : Fragment() {
         })
 
     }
+
+    private fun getNextImageAndVideo() {
+        page++
+        if ()
+        viewLifecycleOwner.lifecycleScope.launch {
+            viewModel.getVideoAndImageList(lastQuery, page)
+        }
+    }
+
+    private fun initScrollListener() {
+        binding.rvSearch.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val layoutManager = binding.rvSearch.layoutManager
+
+            }
+        })
+    }
+
 
 }
