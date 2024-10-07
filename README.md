@@ -28,3 +28,9 @@
 * 검색 데이터는 https://developers.kakao.com/product/search 의 Open API를 사용합니다.
 오픈 소스 사용 가능합니다. 참고로 카카오뱅크에서는 retrofit, kotlinx-coroutines-android, rxjava 등을 사용하고 있습니다.
 ```
+
+## 애플리케이션 기능
+
+|이미지 검색 및 보관|무한스크롤|
+|---|---|
+|<img src="https://s6.ezgif.com/tmp/ezgif-6-07bba86181.gif" width="300" height="420"/>|<img src="https://github.com/user-attachments/assets/dca2dd51-a278-41f0-a12b-36bacec062ef" width="300" height="420"/>|
